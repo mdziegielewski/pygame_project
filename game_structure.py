@@ -1,6 +1,7 @@
 import pygame
 from sys import exit
 
+
 pygame.init()   #game setup
 
 width = 900     #game screen dimension
@@ -16,14 +17,14 @@ pygame.display.set_caption("First game")
 
 
 def grass_method():
-    grassImage = pygame.image.load("grass.png").convert()
+    grassImage = pygame.image.load("images/grass.png").convert()
     grassImage = pygame.transform.scale(grassImage,
                                         (screenDim))
     screen.blit(grassImage, (0, 0))
 
 
 def player_method():
-    player = pygame.image.load("characterBody.png").convert_alpha()
+    player = pygame.image.load("images/characterBody.png").convert_alpha()
     playerWidth = player.get_rect().width
     playerHeight = player.get_rect().height
     player = pygame.transform.scale(player,
@@ -34,7 +35,7 @@ def player_method():
 
 
 def foot_method():
-    foot = pygame.image.load("characterFoot.png").convert_alpha()
+    foot = pygame.image.load("images/characterFoot.png").convert_alpha()
     footWidth = foot.get_rect().width
     footHeight = foot.get_rect().height
     foot = pygame.transform.scale(foot,
@@ -45,7 +46,7 @@ def foot_method():
 
 
 def ball_method():
-    ball = pygame.image.load("ball.png").convert_alpha()
+    ball = pygame.image.load("images/ball.png").convert_alpha()
     ballWidth = ball.get_rect().width
     ballHeight = ball.get_rect().height
     ball = pygame.transform.scale(ball,
