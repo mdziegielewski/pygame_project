@@ -1,8 +1,18 @@
 import pygame
 from sys import exit
 
-
 pygame.init()   #game setup
+
+
+def cropSurface(newWidth, newHeight, cropWidth, cropHeight, image):
+
+    newSurf = pygame.Surface((newWidth, newHeight),
+                             pygame.SRCALPHA, 32)   #32 bytes
+    newSurf.blit(image, (0, 0), (cropWidth, cropHeight,
+                                 newWidth, newHeight))
+    return newSurf
+
+
 
 width = 900     #game screen dimension
 height = 700
@@ -31,7 +41,7 @@ def player_method():
                                     (playerWidth * rescale,
                                      playerHeight * rescale))
     player = pygame.transform.rotate(player, 90)
-    screen.blit(player, (0, 0))
+    #screen.blit(player, (0, 0))
 
 
 def foot_method():
@@ -42,7 +52,7 @@ def foot_method():
                                   (footWidth * rescale,
                                    footHeight * rescale))
     foot = pygame.transform.rotate(foot, 90)
-    screen.blit(foot, (0, 0))
+    #screen.blit(foot, (0, 0))
 
 
 def ball_method():
@@ -52,7 +62,21 @@ def ball_method():
     ball = pygame.transform.scale(ball,
                                   (ballWidth * rescaleBall,
                                    ballHeight * rescaleBall))
-    screen.blit(ball, (0, 0))
+    #screen.blit(ball, (0, 0))
+
+
+def goal_left_method():
+    goalLeft = pygame.image.load("goalLeft.png").convert_alpha()
+    goalLeft = pygame.transform.scale(goalLeft, (250, 270))
+    goalLeftWidth = goalLeft.get_rect().width
+    goalLeftHeight = goalLeft.get_rect().height
+    goalLeft = cropSurface(goalLeftWidth/2+12,
+                           goalLeftHeight/2+12,
+                           goalLeftWidth/2-12,
+                           goalLeftHeight/2-12,
+                           goalLeft)
+
+    screen.blit(goalLeft, (0, 0))
 
 
 
@@ -60,6 +84,7 @@ grass_method()
 player_method()
 foot_method()
 ball_method()
+goal_left_method()
 
 
 finished = False
