@@ -66,7 +66,7 @@ def ball_method():
 
 
 def goal_left_method():
-    goalLeft = pygame.image.load("goalLeft.png").convert_alpha()
+    goalLeft = pygame.image.load("images/goalLeft.png").convert_alpha()
     goalLeft = pygame.transform.scale(goalLeft, (250, 270))
     goalLeftWidth = goalLeft.get_rect().width
     goalLeftHeight = goalLeft.get_rect().height
@@ -79,12 +79,39 @@ def goal_left_method():
     screen.blit(goalLeft, (0, 0))
 
 
+def goal_middle_method():
+    goalMid = pygame.image.load("images/goalMiddle.png").convert_alpha()
+    goalMid = pygame.transform.scale(goalMid, (250, 270))
+    goalMidWidth = goalMid.get_rect().width
+    goalMidHeight = goalMid.get_rect().height
+    goalMid = cropSurface(goalMidWidth,
+                          goalMidHeight/2+12,
+                          0,
+                          goalMidHeight/2-12,
+                          goalMid)
+    screen.blit(goalMid, (137, 0))
+
+def goal_right_method():
+    goalRight = pygame.image.load("images/goalRight.png").convert_alpha()
+    goalRight = pygame.transform.scale(goalRight, (250, 270))
+    goalRightWidth = goalRight.get_rect().width
+    goalRightHeight = goalRight.get_rect().height
+    goalRight = cropSurface(goalRightWidth/2+12,
+                            goalRightHeight/2+12,
+                            0,
+                            goalRightHeight/2-12,
+                            goalRight)
+    screen.blit(goalRight, (387, 0))
+
+
 
 grass_method()
 player_method()
 foot_method()
 ball_method()
 goal_left_method()
+goal_middle_method()
+goal_right_method()
 
 
 finished = False
