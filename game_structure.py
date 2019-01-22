@@ -26,95 +26,117 @@ screen = pygame.display.set_mode(screenDim)     #screen display
 pygame.display.set_caption("First game")
 
 
-def grass_method():
-    grassImage = pygame.image.load("images/grass.png").convert()
-    grassImage = pygame.transform.scale(grassImage,
-                                        (screenDim))
-    screen.blit(grassImage, (0, 0))
-
-
-def player_method():
-    player = pygame.image.load("images/characterBody.png").convert_alpha()
-    playerWidth = player.get_rect().width
-    playerHeight = player.get_rect().height
-    player = pygame.transform.scale(player,
-                                    (playerWidth * rescale,
-                                     playerHeight * rescale))
-    player = pygame.transform.rotate(player, 90)
-    #screen.blit(player, (0, 0))
-
-
-def foot_method():
-    foot = pygame.image.load("images/characterFoot.png").convert_alpha()
-    footWidth = foot.get_rect().width
-    footHeight = foot.get_rect().height
-    foot = pygame.transform.scale(foot,
-                                  (footWidth * rescale,
-                                   footHeight * rescale))
-    foot = pygame.transform.rotate(foot, 90)
-    #screen.blit(foot, (0, 0))
-
-
-def ball_method():
-    ball = pygame.image.load("images/ball.png").convert_alpha()
-    ballWidth = ball.get_rect().width
-    ballHeight = ball.get_rect().height
-    ball = pygame.transform.scale(ball,
-                                  (ballWidth * rescaleBall,
-                                   ballHeight * rescaleBall))
-    #screen.blit(ball, (0, 0))
-
-
-def goal_left_method():
-    goalLeft = pygame.image.load("images/goalLeft.png").convert_alpha()
-    goalLeft = pygame.transform.scale(goalLeft, (250, 270))
-    goalLeftWidth = goalLeft.get_rect().width
-    goalLeftHeight = goalLeft.get_rect().height
-    goalLeft = cropSurface(goalLeftWidth/2+12,
-                           goalLeftHeight/2+12,
-                           goalLeftWidth/2-12,
-                           goalLeftHeight/2-12,
-                           goalLeft)
-
-    screen.blit(goalLeft, (0, 0))
-
-
-def goal_middle_method():
-    goalMid = pygame.image.load("images/goalMiddle.png").convert_alpha()
-    goalMid = pygame.transform.scale(goalMid, (250, 270))
-    goalMidWidth = goalMid.get_rect().width
-    goalMidHeight = goalMid.get_rect().height
-    goalMid = cropSurface(goalMidWidth,
-                          goalMidHeight/2+12,
-                          0,
-                          goalMidHeight/2-12,
-                          goalMid)
-    screen.blit(goalMid, (137, 0))
-
-def goal_right_method():
-    goalRight = pygame.image.load("images/goalRight.png").convert_alpha()
-    goalRight = pygame.transform.scale(goalRight, (250, 270))
-    goalRightWidth = goalRight.get_rect().width
-    goalRightHeight = goalRight.get_rect().height
-    goalRight = cropSurface(goalRightWidth/2+12,
-                            goalRightHeight/2+12,
-                            0,
-                            goalRightHeight/2-12,
-                            goalRight)
-    screen.blit(goalRight, (387, 0))
+grassImage = pygame.image.load("images/grass.png").convert()
+grassImage = pygame.transform.scale(grassImage,
+                                (screenDim))
+screen.blit(grassImage, (0, 0))
 
 
 
-grass_method()
-player_method()
-foot_method()
-ball_method()
-goal_left_method()
-goal_middle_method()
-goal_right_method()
+player = pygame.image.load("images/characterBody.png").convert_alpha()
+playerWidth = player.get_rect().width
+playerHeight = player.get_rect().height
+player = pygame.transform.scale(player,
+                                (playerWidth * rescale,
+                                 playerHeight * rescale))
+player = pygame.transform.rotate(player, 90)
+currentRotation = 0
+playerStart = player
+
+# screen.blit(player, (0, 0))
 
 
+
+foot = pygame.image.load("images/characterFoot.png").convert_alpha()
+footWidth = foot.get_rect().width
+footHeight = foot.get_rect().height
+foot = pygame.transform.scale(foot,
+                              (footWidth * rescale,
+                               footHeight * rescale))
+foot = pygame.transform.rotate(foot, 90)
+footStart = foot
+# screen.blit(foot, (0, 0))
+
+
+
+ball = pygame.image.load("images/ball.png").convert_alpha()
+ballWidth = ball.get_rect().width
+ballHeight = ball.get_rect().height
+ball = pygame.transform.scale(ball,
+                              (ballWidth * rescaleBall,
+                               ballHeight * rescaleBall))
+# screen.blit(ball, (0, 0))
+
+
+goalLeft = pygame.image.load("images/goalLeft.png").convert_alpha()
+goalLeft = pygame.transform.scale(goalLeft, (250, 270))
+goalLeftWidth = goalLeft.get_rect().width
+goalLeftHeight = goalLeft.get_rect().height
+goalLeft = cropSurface(goalLeftWidth/2+12,
+                       goalLeftHeight/2+12,
+                       goalLeftWidth/2-12,
+                       goalLeftHeight/2-12,
+                       goalLeft)
+# screen.blit(goalLeft, (0, 0))
+
+
+
+
+goalMid = pygame.image.load("images/goalMiddle.png").convert_alpha()
+goalMid = pygame.transform.scale(goalMid, (250, 270))
+goalMidWidth = goalMid.get_rect().width
+goalMidHeight = goalMid.get_rect().height
+goalMid = cropSurface(goalMidWidth,
+                      goalMidHeight/2+12,
+                      0,
+                      goalMidHeight/2-12,
+                      goalMid)
+# screen.blit(goalMid, (137, 0))
+
+
+goalRight = pygame.image.load("images/goalRight.png").convert_alpha()
+goalRight = pygame.transform.scale(goalRight, (250, 270))
+goalRightWidth = goalRight.get_rect().width
+goalRightHeight = goalRight.get_rect().height
+goalRight = cropSurface(goalRightWidth/2+12,
+                        goalRightHeight/2+12,
+                        0,
+                        goalRightHeight/2-12,
+                        goalRight)
+# screen.blit(goalRight, (387, 0))
+
+
+
+
+
+
+goalStart = (width - goalLeft.get_rect().width - goalMid.get_rect().width - goalRight.get_rect().width)/2
+screen.blit(goalLeft, (goalStart, 0))
+screen.blit(goalMid, (goalStart+goalLeft.get_rect().width, 0))
+screen.blit(goalRight, (goalStart+goalLeft.get_rect().width+goalMid.get_rect().width, 0))
+
+playerX = width/2
+playerY = 530
+playeyXOriginal = playerX
+playerYOriginal = playerY
+
+screen.blit(player, (playerX-player.get_rect().width/2, playerY-player.get_rect().height))
+
+ballX = width/2
+ballY = 450
+radius = playerY - ballY
+
+screen.blit(ball, (ballX-ball.get_rect().width/2, ballY-ball.get_rect().height))
+
+
+
+
+
+
+
+frame = pygame.time.Clock() #max frame rate
 finished = False
+
 while finished == False:
     for event in pygame.event.get():    #processing all the events
         if event.type == pygame.QUIT:
@@ -122,4 +144,17 @@ while finished == False:
             pygame.quit()   #close the screen
             exit()
 
+    pressedKeys = pygame.key.get_pressed() #"event listener"
+
+    if pressedKeys[pygame.K_LEFT] == True:
+        pass
+
+    elif pressedKeys[pygame.K_RIGHT] == True:
+        pass
+
+    elif pressedKeys[pygame.K_SPACE] == True:
+        pass
+
+
     pygame.display.flip()   #screen/frame update
+    frame.tick(30)    #max frame rate
