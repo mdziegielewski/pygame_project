@@ -1,5 +1,6 @@
 import pygame
 from sys import exit
+import math
 
 pygame.init()   #game setup
 
@@ -11,6 +12,21 @@ def cropSurface(newWidth, newHeight, cropWidth, cropHeight, image):
     newSurf.blit(image, (0, 0), (cropWidth, cropHeight,
                                  newWidth, newHeight))
     return newSurf
+
+def MovePlayer(direction, radius, absRot):
+    yChange = 5
+    deltaTheta = int(90/(radius/yChange))
+    if direction == "left":
+        deltaTheta *= -1
+
+    finalRot = (absRot + deltaTheta)*math.pi/180
+
+    hypotenuse = radius * math.sin(finalRot) / (math.sin(math.pi-finalRot) / 2)
+
+    newX = hypotenuse * math.cos(math.pi/2-(math.pi-finalRot)/2)
+    newY = hypotenuse * math.sin(math.pi/2-(math.pi-finalRot)/2)
+
+    return newX, newY, absRot + deltaTheta
 
 
 
