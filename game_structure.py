@@ -13,7 +13,7 @@ def cropSurface(newWidth, newHeight, cropWidth, cropHeight, image):
                                  newWidth, newHeight))
     return newSurf
 
-def MovePlayer(direction, radius, absRot):
+def movePlayer(direction, radius, absRot):
     yChange = 5
     deltaTheta = int(90/(radius/yChange))
     if direction == "left":
@@ -21,7 +21,7 @@ def MovePlayer(direction, radius, absRot):
 
     finalRot = (absRot + deltaTheta)*math.pi/180
 
-    hypotenuse = radius * math.sin(finalRot) / (math.sin(math.pi-finalRot) / 2)
+    hypotenuse = radius * math.sin(finalRot) / (math.sin((math.pi-finalRot) / 2))
 
     newX = hypotenuse * math.cos(math.pi/2-(math.pi-finalRot)/2)
     newY = hypotenuse * math.sin(math.pi/2-(math.pi-finalRot)/2)
@@ -133,7 +133,7 @@ screen.blit(goalRight, (goalStart+goalLeft.get_rect().width+goalMid.get_rect().w
 
 playerX = width/2
 playerY = 530
-playeyXOriginal = playerX
+playerXOriginal = playerX
 playerYOriginal = playerY
 
 screen.blit(player, (playerX-player.get_rect().width/2, playerY-player.get_rect().height))
@@ -163,14 +163,26 @@ while finished == False:
     pressedKeys = pygame.key.get_pressed() #"event listener"
 
     if pressedKeys[pygame.K_LEFT] == True:
-        pass
+        changeX, changeY, currentRotation = movePlayer("left", radius, currentRotation)
+        player = pygame.transform.rotate(playerStart, currentRotation)
+        playerX = playerXOriginal + changeX
+        playerY = playerYOriginal - changeY
 
     elif pressedKeys[pygame.K_RIGHT] == True:
-        pass
+        changeX, changeY, currentRotation = movePlayer("right", radius, currentRotation)
+        player = pygame.transform.rotate(playerStart, currentRotation)
+        playerX = playerXOriginal + changeX
+        playerY = playerYOriginal - changeY
 
     elif pressedKeys[pygame.K_SPACE] == True:
         pass
 
 
+    screen.blit(grassImage, (0, 0))
+    screen.blit(goalLeft, (goalStart, 0))
+    screen.blit(goalMid, (goalStart + goalLeft.get_rect().width, 0))
+    screen.blit(goalRight, (goalStart + goalLeft.get_rect().width + goalMid.get_rect().width, 0))
+    screen.blit(ball, (ballX - ball.get_rect().width / 2, ballY - ball.get_rect().height))
+    screen.blit(player, (playerX - player.get_rect().width / 2, playerY - player.get_rect().height))
     pygame.display.flip()   #screen/frame update
     frame.tick(30)    #max frame rate
