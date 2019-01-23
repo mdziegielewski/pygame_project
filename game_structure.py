@@ -29,6 +29,18 @@ def movePlayer(direction, radius, absRot):
     return newX, newY, absRot + deltaTheta
 
 
+def update_method():
+    global screen, grassImage, goalLeft, goalMid, goalRight,\
+        ball, player, goalStart, ballX, ballY, playerX, playerY
+
+    screen.blit(grassImage, (0, 0))
+    screen.blit(goalLeft, (goalStart, 0))
+    screen.blit(goalMid, (goalStart + goalLeft.get_rect().width, 0))
+    screen.blit(goalRight, (goalStart + goalLeft.get_rect().width + goalMid.get_rect().width, 0))
+    screen.blit(ball, (ballX - ball.get_rect().width / 2, ballY - ball.get_rect().height))
+    screen.blit(player, (playerX - player.get_rect().width / 2, playerY - player.get_rect().height))
+
+
 
 width = 900     #game screen dimension
 height = 700
@@ -153,6 +165,8 @@ screen.blit(ball, (ballX-ball.get_rect().width/2, ballY-ball.get_rect().height))
 frame = pygame.time.Clock() #max frame rate
 finished = False
 
+
+
 while finished == False:
     for event in pygame.event.get():    #processing all the events
         if event.type == pygame.QUIT:
@@ -163,26 +177,22 @@ while finished == False:
     pressedKeys = pygame.key.get_pressed() #"event listener"
 
     if pressedKeys[pygame.K_LEFT] == True:
-        changeX, changeY, currentRotation = movePlayer("left", radius, currentRotation)
-        player = pygame.transform.rotate(playerStart, currentRotation)
-        playerX = playerXOriginal + changeX
-        playerY = playerYOriginal - changeY
+        if currentRotation > -90:
+            changeX, changeY, currentRotation = movePlayer("left", radius, currentRotation)
+            player = pygame.transform.rotate(playerStart, currentRotation)
+            playerX = playerXOriginal + changeX
+            playerY = playerYOriginal - changeY
 
     elif pressedKeys[pygame.K_RIGHT] == True:
-        changeX, changeY, currentRotation = movePlayer("right", radius, currentRotation)
-        player = pygame.transform.rotate(playerStart, currentRotation)
-        playerX = playerXOriginal + changeX
-        playerY = playerYOriginal - changeY
+        if currentRotation < 90:
+            changeX, changeY, currentRotation = movePlayer("right", radius, currentRotation)
+            player = pygame.transform.rotate(playerStart, currentRotation)
+            playerX = playerXOriginal + changeX
+            playerY = playerYOriginal - changeY
 
     elif pressedKeys[pygame.K_SPACE] == True:
         pass
 
-
-    screen.blit(grassImage, (0, 0))
-    screen.blit(goalLeft, (goalStart, 0))
-    screen.blit(goalMid, (goalStart + goalLeft.get_rect().width, 0))
-    screen.blit(goalRight, (goalStart + goalLeft.get_rect().width + goalMid.get_rect().width, 0))
-    screen.blit(ball, (ballX - ball.get_rect().width / 2, ballY - ball.get_rect().height))
-    screen.blit(player, (playerX - player.get_rect().width / 2, playerY - player.get_rect().height))
+    update_method()
     pygame.display.flip()   #screen/frame update
     frame.tick(30)    #max frame rate
