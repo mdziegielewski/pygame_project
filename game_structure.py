@@ -21,7 +21,7 @@ def movePlayer(direction, radius, absRot):
 
     finalRot = (absRot + deltaTheta)*math.pi/180
 
-    hypotenuse = radius * math.sin(finalRot) / (math.sin((math.pi-finalRot) / 2))
+    hypotenuse = (radius*math.sin(finalRot)/(math.sin((math.pi-finalRot)/2)))
 
     newX = hypotenuse * math.cos(math.pi/2-(math.pi-finalRot)/2)
     newY = hypotenuse * math.sin(math.pi/2-(math.pi-finalRot)/2)
@@ -34,11 +34,16 @@ def update_method():
         ball, player, goalStart, ballX, ballY, playerX, playerY
 
     screen.blit(grassImage, (0, 0))
+
     screen.blit(goalLeft, (goalStart, 0))
+
     screen.blit(goalMid, (goalStart + goalLeft.get_rect().width, 0))
+
     screen.blit(goalRight, (goalStart + goalLeft.get_rect().width + goalMid.get_rect().width, 0))
-    screen.blit(ball, (ballX - ball.get_rect().width / 2, ballY - ball.get_rect().height))
-    screen.blit(player, (playerX - player.get_rect().width / 2, playerY - player.get_rect().height))
+
+    screen.blit(ball, (ballX - ball.get_rect().width / 2, ballY - ball.get_rect().height/2))
+
+    screen.blit(player, (playerX - player.get_rect().width / 2, playerY - player.get_rect().height/2))
 
 
 
@@ -148,13 +153,15 @@ playerY = 530
 playerXOriginal = playerX
 playerYOriginal = playerY
 
-screen.blit(player, (playerX-player.get_rect().width/2, playerY-player.get_rect().height))
+screen.blit(player, (playerX-player.get_rect().width/2,
+                     playerY-player.get_rect().height/2))
 
 ballX = width/2
 ballY = 450
 radius = playerY - ballY
 
-screen.blit(ball, (ballX-ball.get_rect().width/2, ballY-ball.get_rect().height))
+screen.blit(ball, (ballX-ball.get_rect().width/2,
+                   ballY-ball.get_rect().height/2))
 
 
 
@@ -191,7 +198,16 @@ while finished == False:
             playerY = playerYOriginal - changeY
 
     elif pressedKeys[pygame.K_SPACE] == True:
-        pass
+        xMove = (playerX - ballX) / 10
+        yMove = (playerY - ballY) / 10
+        distanceToShoulder = 20
+        shoulderAngle = currentRotation*math.pi/180
+        for i in range(5):
+            playerX -= xMove
+            playerY -= yMove
+            update_method()
+            pygame.display.flip()
+            frame.tick(30)
 
     update_method()
     pygame.display.flip()   #screen/frame update
