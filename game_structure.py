@@ -29,21 +29,31 @@ def movePlayer(direction, radius, absRot):
     return newX, newY, absRot + deltaTheta
 
 
-def update_method():
+def update_method(showFoot = False):
     global screen, grassImage, goalLeft, goalMid, goalRight,\
         ball, player, goalStart, ballX, ballY, playerX, playerY
 
     screen.blit(grassImage, (0, 0))
 
-    screen.blit(goalLeft, (goalStart, 0))
+    screen.blit(goalLeft, (goalStart,
+                           0))
 
-    screen.blit(goalMid, (goalStart + goalLeft.get_rect().width, 0))
+    screen.blit(goalMid, (goalStart + goalLeft.get_rect().width,
+                          0))
 
-    screen.blit(goalRight, (goalStart + goalLeft.get_rect().width + goalMid.get_rect().width, 0))
+    screen.blit(goalRight, (goalStart + goalLeft.get_rect().width + goalMid.get_rect().width,
+                            0))
 
-    screen.blit(ball, (ballX - ball.get_rect().width / 2, ballY - ball.get_rect().height/2))
+    if showFoot:
+        global foot, footX, footY
+        screen.blit(foot, (footX - foot.get_rect().width/2,
+                            footY - foot.get_rect().height/2))
 
-    screen.blit(player, (playerX - player.get_rect().width / 2, playerY - player.get_rect().height/2))
+    screen.blit(ball, (ballX - ball.get_rect().width / 2,
+                       ballY - ball.get_rect().height/2))
+
+    screen.blit(player, (playerX - player.get_rect().width / 2,
+                         playerY - player.get_rect().height/2))
 
 
 
@@ -76,7 +86,7 @@ player = pygame.transform.rotate(player, 90)
 currentRotation = 0
 playerStart = player
 
-# screen.blit(player, (0, 0))
+
 
 
 
@@ -88,7 +98,7 @@ foot = pygame.transform.scale(foot,
                                footHeight * rescale))
 foot = pygame.transform.rotate(foot, 90)
 footStart = foot
-# screen.blit(foot, (0, 0))
+
 
 
 
@@ -98,7 +108,6 @@ ballHeight = ball.get_rect().height
 ball = pygame.transform.scale(ball,
                               (ballWidth * rescaleBall,
                                ballHeight * rescaleBall))
-# screen.blit(ball, (0, 0))
 
 
 goalLeft = pygame.image.load("images/goalLeft.png").convert_alpha()
@@ -110,7 +119,8 @@ goalLeft = cropSurface(goalLeftWidth/2+12,
                        goalLeftWidth/2-12,
                        goalLeftHeight/2-12,
                        goalLeft)
-# screen.blit(goalLeft, (0, 0))
+
+goalHeight = goalLeft.get_rect().height
 
 
 
@@ -124,7 +134,7 @@ goalMid = cropSurface(goalMidWidth,
                       0,
                       goalMidHeight/2-12,
                       goalMid)
-# screen.blit(goalMid, (137, 0))
+
 
 
 goalRight = pygame.image.load("images/goalRight.png").convert_alpha()
@@ -136,8 +146,6 @@ goalRight = cropSurface(goalRightWidth/2+12,
                         0,
                         goalRightHeight/2-12,
                         goalRight)
-# screen.blit(goalRight, (387, 0))
-
 
 
 
@@ -200,14 +208,36 @@ while finished == False:
     elif pressedKeys[pygame.K_SPACE] == True:
         xMove = (playerX - ballX) / 10
         yMove = (playerY - ballY) / 10
+        normMove = 1 / math.sqrt(xMove**2 + yMove**2)
         distanceToShoulder = 20
         shoulderAngle = currentRotation*math.pi/180
-        for i in range(5):
+        for i in range(3):
             playerX -= xMove
             playerY -= yMove
             update_method()
             pygame.display.flip()
             frame.tick(30)
+        footX = (playerX +
+                 distanceToShoulder * math.cos(shoulderAngle) -
+                 20 * xMove * normMove)
+        footY = (playerY -
+                 distanceToShoulder * math.sin(shoulderAngle) -
+                 20 * yMove * normMove)
+        foot = pygame.transform.rotate(footStart, currentRotation)
+        update_method(True)
+        pygame.display.flip()
+
+        ballXDirection = xMove*normMove
+        ballYDirection = yMove*normMove
+
+        speed = 15
+        while ballY >= goalHeight:
+            ballX -= speed * ballXDirection
+            ballY -= speed * ballYDirection
+            update_method()
+            pygame.display.flip()
+            frame.tick(30)
+
 
     update_method()
     pygame.display.flip()   #screen/frame update
